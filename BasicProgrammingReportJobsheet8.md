@@ -142,66 +142,231 @@ to GitHub.
 
 ---
 
-### 2.3 Experiment 3: Café Transaction Case Study – DO-WHILE Loop
-In this section, students are required to apply a *WHILE loop* with a stop condition (sentinel value) to process café transactions for several customers. For each customer, the cashier enters the quantity of coffee (Rp 12,000), tea (Rp 7,000), and bread (Rp 20,000), and the program calculates the total price. The loop keeps running until the cashier enters "cancel", which stops the transaction input and terminates the program.
+### 2.3 Experiment 3: Debugging a Star Triangle – Nested WHILE
+The starting code in this experiment is intentionally written so that it does not yet produce
+the correct triangle format. Your task is to identify the errors and fix them without changing
+the WHILE structure into FOR.
 
 #### 2.2.1 Program Code Java
 ```java
 import java.util.Scanner;
 
-public class CafeDoWHile12 {
+public class Triangle12 {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
 
-        int coffee, tea, bread, totalPrice, coffePrice = 12000, teaPrice = 7000, breadPrice = 20000;
-        String customerName;
+        System.out.print("Enter the value of n: ");
+        int n = input.nextInt();
 
-        do{
-            System.out.print("Enter customer name(type 'cancel' to exit): ");
-            customerName = sc.nextLine();
-            if(customerName.equalsIgnoreCase("cancel")){
-                System.out.println("Transaction canceled.");
-                break;
+        int i = 0;
+        while(i <= n) {
+            //System.out.print("[i=" +  i + "] "); //temporary debug
+            int j = 0;
+            while(j < i){
+                System.out.print("*");
+                j++;
             }
-        
-            System.out.print("Coffe Quantity: ");
-            coffee = sc.nextInt();
-            System.out.print("Tea Quantity: ");
-            tea = sc.nextInt();
-            System.out.print("Bread Quantity: ");
-            bread = sc.nextInt();
-            totalPrice = (coffee * coffePrice) + (tea * teaPrice) + (bread * breadPrice);
-            System.out.println("Total Amount: Rp. " + totalPrice);
-            sc.nextLine();
-        }while(true);
-        System.out.println("All transactions completed.");
-        
-        sc.close();
+            System.out.println();
+            i++;
+        }
+        input.close();
+    }    
+}
+``` 
+
+Output program:
+![Experiment3Output](/Experiment3Output(1).png)
+
+*Add a temporary debug command right after the line while (i <= n) {. This command displays the value of i each time the outer loop starts.
+
+```java
+import java.util.Scanner;
+
+public class Triangle12 {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Enter the value of n: ");
+        int n = input.nextInt();
+
+        int i = 0;
+        while(i <= n) {
+            //System.out.print("[i=" +  i + "] "); //temporary debug
+            int j = 0;
+            while(j < i){
+                System.out.print("*");
+                j++;
+            }
+            i++;
+        }
+        input.close();
+    }    
+}
+```
+#### 2.3.2 Execution Result / Screenshot Output
+The following is an example of the *output* display after the program is run.:
+![Experiment3Output(2)](/Experiment3Output(2).png)
+
+5. Run the program again with n = 5, then observe the result:
+a. How many times does the outer loop run? Is this the same as the desired number of rows?
+   The outer loop runs 6 times (i = 0, 1, 2, 3, 4, 5) because the condition is i <= n. The desired output is 5 rows, so it's not the same.
+b. How many * characters are printed when i = 0?
+   Zero. The inner loop condition j < i becomes 0 < 0, which is false immediately, so the body never executes.
+c. Why are all the characters displayed on a single line?
+   Because the program only uses System.out.print, and nothing prints a newline after each inner loop.
+
+6. Fix the code one step at a time, and run the program after each fix:
+a. Add System.out.println(); after the inner loop finishes, before i++. Run it and observe: is there still any line that does not contain *?
+   Yes, on the first line
+b. Change the initialization and/or the condition of the outer loop so that the loop runs
+exactly n times without any empty lines. Run it again.
+
+**Modified Program Code:**
+```java
+int i = 1;
+        while(i <= n) {
+            //System.out.print("[i=" +  i + "] "); //temporary debug
+            int j = 0;
+            while(j < i){
+                System.out.print("*");
+                j++;
+            }
+            System.out.println();
+            i++;
+        }
+```
+Modify the program so that, after the triangle above is printed, it also prints an inverted triangle. Write a second nested WHILE below the first nested WHILE (still inside main()), without changing the WHILE into FOR.
+
+**Modified Triangle and Inverted Triangle Code:**
+```java
+import java.util.Scanner;
+
+public class Triangle12 {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Enter the value of n: ");
+        int n = input.nextInt();
+
+        int i = 1;
+        while(i <= n) {
+            //System.out.print("[i=" +  i + "] "); //temporary debug
+            int j = 0;
+            while(j < i){
+                System.out.print("*");
+                j++;
+            }
+            System.out.println();
+            i++;
+        }
+        int k = n;
+        while (k >= 1) {
+            int m = 0;
+            while (m < k) {
+                System.out.print("*");
+                m++;
+            }
+            System.out.println();
+            k--;
+        }
+
+        input.close();
     }    
 }
 
 ```
-
-#### 2.3.2 Execution Result / Screenshot Output
-The following is an example of the *output* display after the program is run.:
-![Experiment2Result](/Experiment2Result.png)
+The output: ![EXperiment3Output(3)](/Experiment3OUtput(3).png)
 
 #### 2.2.3 Answers to Questions / Reflection Questions
-* **Question 1:** In this DO-WHILE loop, if the first customer name entered is “cancel”, how many times is the loop executed?
-  * **Answer:** 1 time. The body runs first, and the condition is checked afterward. So even if the very first input is “cancel”, the loop body still starts once.
-* **Question 2:** State the stopping condition used in this DO-WHILE loop!
+* **Question 1:** Identify the mismatches in the initial output, and at least two fixes needed to produce a nested triangle pattern.
+  * **Answer:** 
+  1. Line breaks: there is only 1 single line before, because print is used and nothing prints a newline after each inner loop
+  2. Row count: there is 6 outer iterations (i = 0 to 5) before, because i = 0 with i <= n runs one extra time.
+  3. First row: The first iterations print 0 stars, because at i = 0, j < i is 0 < 0, so the inner loop never runs
+
+  **Fix 1**: Add a new line after each inner loop (System.out.println();)
+  **Fix 2**: Change the initialization into i = 1; so that the loop runs exactly n times without any empty lines.
+* **Question 2:** Explain the roles of the variables i and j. Why must the value of j be reset to 0 in every iteration of the outer loop? What happens if j is not reset?
   * **Answer:**
-  ```java
-  customerName.equalsIgnoreCase("cancel")
-  ``` 
-  The loop stops when the cashier types cancel as the customer name. equalsIgnoreCase ignores letter case, so cancel, CANCEL, and Cancel all work. The loop runs repeatedly for each customer and terminates when the input customerName equals “cancel” (case-insensitive), which triggers break.
-* **Question 3:** What is the function of using the value true in the DO-WHILE condition?
-  * **Answer:** Using true as the condition creates an infinite loop. Since true is always true, the condition never becomes false, so the loop never ends by itself and always repeats for the next customer. The loop is terminated manually through break when the sentinel value “cancel” is entered.
-* **Question 4:** Why does this DO-WHILE loop still run even though it has no initialization and update
-components?
-  * **Answer:** A DO-WHILE loop does not need initialization and update components because it is controlled by a condition rather than a counter. In this program, the loop repeats through while(true) and ends through break when the sentinel value “cancel” is entered.
+  a. i is the row counter (outer loop). Its value is the current row number, which is also the number of stars that row should contain. The outer loop runs once per row.
+
+  b. j is the star counter (inner loop). It counts how many stars have been printed so far in the current row. The inner loop while (j < i) keeps printing * until j reaches i, so row i gets exactly i stars.
+
+  c. Why j must be reset to 0 every iteration?
+  The inner loop works by counting up from 0 to i. At the end of each row, j has the value i (the loop only stops once j < i is false). If j is not set back to 0 at the start of the next row, the counter begins where the last row left off instead of at the beginning, so it no longer measures “stars printed in this row”.
+* **Question 3:** Explain the changes to the initialization, the condition, and the update of the outer loop that are needed to form the inverted triangle
+  * **Answer:** 
+  1. Initialization: 1 becomes n.
+  The inverted triangle begins with its widest row, so the star count must start at n instead of 1. If you kept the start at 1, the first row would have only one star.
+  2. Condition: i <= n becomes k >= 1.
+  The comparison flips from “not yet above the maximum” to “not yet below the minimum”. The loop now stops once k drops under 1. If you left k <= n in place, the condition would be true at the start and (with a decreasing k) would stay true forever, which is an infinite loop. The condition has to test the end point you are moving toward.
+  3. Update: i++ becomes k--.
+  Each row must be one star shorter than the previous one, so the counter goes down by 1. Keeping k++ would make the rows grow and move k away from the stopping point of k >= 1, which again never terminates.
+
 ---
 
+### 2.2 Experiment 4: Case Study of Group Project Scores
+
+In assessing a group project, each group receives scores from a number of graders. The program receives the number of groups and the number of graders (the same for every group), then calculates the average score of each group and determines the group with the highest average. This case is solved with nested loops without storing all the scores: a WHILE (outer) for the groups, a FOR (middle) for the graders, and a DO-WHILE (inner) to repeat
+invalid score input.
+
+#### 2.2.1 Program Code Java
+```java
+import java.util.Scanner;
+
+public class Rectangle12 {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Enter the number of rows: ");
+        int rows = input.nextInt();
+        System.out.print("Enter the number of columns: ");
+        int columns = input.nextInt();
+
+        for(int i = 1; i <= rows; i++){
+            for(int j = 1; j <= columns; j++){
+                System.out.print("*");
+            }
+            System.out.println();
+        }
+        input.close();
+    }    
+}
+```
+
+#### 2.2.2 Execution Result / Screenshot Output
+The following is an example of the *output* display after the program is run.:
+![Experiment2Output](/Experiment2Output(1).png)
+
+#### 2.2.3 Answers to Questions / Reflection Questions
+* **Question 1:** Explain the function of the variables i and j in the program.
+  * **Answer:** 
+  Variable i determines how many rows are printed, while variable j determines how many stars are printed in each row. The inner loop (j) finishes printing one row before the outer loop (i) moves to the next row.
+* **Question 2:** How many times are the outer loop, the inner loop, and the statement print("*") executed for rows = 4 and columns = 7?
+  * **Answer:** 
+  a. Outer loop (i): Executes 4 times because there are 4 rows.
+  b. Inner loop (j): Executes 7 times for each outer loop iteration, so a total of 4 x 7 = 28 times.
+  c. Statement System.out.print("*"): Executes 28 times because it is inside the inner loop.
+* **Question 3:** What happens if the bounds of the outer and inner loops are swapped (the outer loop
+uses columns and the inner loop uses rows)? Use rows = 3 and columns = 6 to explain.
+  * **Answer:** If the bounds of the outer and inner loops are swapped, the program will print a rectangle with 6 rows and 3 columns instead of 3 rows and 6 columns.
+```java
+for (int i = 1; i <= columns; i++) {
+    for (int j = 1; j <= rows; j++) {
+        System.out.print("*");
+    }
+    System.out.println();
+}
+```
+The output: ![Experiment2QOutput(2)](/Experiment2QOutput(2).png)
+
+* **Question 4:** Explain the effect of removing System.out.println(); after the inner loop.
+  * **Answer:** All the stars will be printed on one single line instead of forming a rectangle.
+* **Question 5:** Modify the program so that the printed character is #, then commit and push the changes
+to GitHub.
+![Experiment2QOutput(3)](/Experiment2QOutput(3).png)
+
+---
 ## 3: ASSIGNMENT
 
 The following is a list of tasks to be performed in this Jobsheet:
